@@ -1,0 +1,83 @@
+name: Common Ci
+on:
+  workflow_call:
+    inputs:
+      component_name:
+        required: true
+        type: string
+jobs:
+
+  Download-Dependencies:
+    runs-on: self-hosted
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+      - run : echo Build
+
+  Test:
+    runs-on: self-hosted
+    needs: Download-Dependencies
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+      - run : echo Test
+
+  DockerBuild-n-Push:
+    runs-on: self-hosted
+    needs: Test
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+      - run: echo Test
+
+  Dev-Deployment:
+    runs-on: DockerBuild-n-Push
+    needs: Test
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+        with:
+          repository: testVinaycicd/roboshop-helm
+        run: |
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin   
+      #       aws eks update-kubeconfig --name dev
+     #     make component=${{ inputs.component_name }} env=dev
+
+  QA-Deployment:
+    runs-on: Dev-Deployment
+    needs: Test
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+        with:
+          repository: testVinaycicd/roboshop-helm
+        run: |
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin   
+    #        aws eks update-kubeconfig --name dev
+  #        make component=${{ inputs.component_name }} env=qa
+
+  UAT-Deployment:
+    runs-on: Dev-Deployment
+    needs: Test
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+        with:
+          repository: testVinaycicd/roboshop-helm
+        run: |
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin   
+    #       aws eks update-kubeconfig --name dev
+  #        make component=${{ inputs.component_name }} env=uat
+
+  PROD-Deployment:
+    runs-on: Dev-Deployment
+    needs: Test
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+        with:
+          repository: testVinaycicd/roboshop-helm
+        run: |
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin   
+    #        aws eks update-kubeconfig --name dev
+  #        make component=${{ inputs.component_name }} env=prod
