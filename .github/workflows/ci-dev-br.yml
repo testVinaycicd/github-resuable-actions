@@ -26,3 +26,5 @@ jobs:
         name: unit tests
       - run: echo Integration Test
         name: Integration tests
+      - run: echo Integration Test
+        name: Integration tests
