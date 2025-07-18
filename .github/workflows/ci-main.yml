@@ -49,8 +49,8 @@ jobs:
       - name: Setup PATH and Deploy to Dev
         run: |
           export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
-          # aws eks update-kubeconfig --name dev
-          # make component=${{ inputs.component_name }} env=dev
+#         aws eks update-kubeconfig --name dev
+#         make component=${{ inputs.component_name }} env=dev
 
   QA-Deployment:
     runs-on: self-hosted
@@ -64,8 +64,8 @@ jobs:
       - name: Setup PATH and Deploy to QA
         run: |
           export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
-          # aws eks update-kubeconfig --name dev
-          # make component=${{ inputs.component_name }} env=qa
+#          aws eks update-kubeconfig --name dev
+#          make component=${{ inputs.component_name }} env=qa
 
   UAT-Deployment:
     runs-on: self-hosted
@@ -79,8 +79,8 @@ jobs:
       - name: Setup PATH and Deploy to UAT
         run: |
           export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
-          # aws eks update-kubeconfig --name dev
-          # make component=${{ inputs.component_name }} env=uat
+#         aws eks update-kubeconfig --name dev
+#         make component=${{ inputs.component_name }} env=uat
 
   PROD-Deployment:
     runs-on: self-hosted
@@ -94,5 +94,5 @@ jobs:
       - name: Setup PATH and Deploy to PROD
         run: |
           export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
-          # aws eks update-kubeconfig --name dev
-          # make component=${{ inputs.component_name }} env=prod
+#         aws eks update-kubeconfig --name dev
+#         make component=${{ inputs.component_name }} env=prod
