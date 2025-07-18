@@ -5,34 +5,38 @@ on:
       component_name:
         required: true
         type: string
+      app_type:
+        required: true
+        type: string
+
 jobs:
 
-  Download-Dependencies:
+  Download-Dependencies-dockerbuild:
     runs-on: self-hosted
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
-      - run : echo Build
+      - name: Download Dependencies
+        run : |
+          if [ ${{ inputs.app_type }} == nodejs ];then
+            npm install
+          elif [ ${{ inputs.app_type }} == maven ];then
+            mvn package
+          fi
+          docker build .
 
-  Test:
+  Docker-n-Push:
     runs-on: self-hosted
-    needs: Download-Dependencies
+    needs:  Download-Dependencies-dockerbuild
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
-      - run : echo Test
+      - name: Docker build
 
-  DockerBuild-n-Push:
-    runs-on: self-hosted
-    needs: Test
-    steps:
-      - name: check out repo code
-        uses: actions/checkout@v4
-      - run: echo Test
 
   Dev-Deployment:
-    runs-on: DockerBuild-n-Push
-    needs: Test
+    runs-on: self-hosted
+    needs:  Docker-n-Push
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
@@ -44,8 +48,8 @@ jobs:
      #     make component=${{ inputs.component_name }} env=dev
 
   QA-Deployment:
-    runs-on: Dev-Deployment
-    needs: Test
+    runs-on: self-hosted
+    needs:  Dev-Deployment
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
@@ -57,8 +61,8 @@ jobs:
   #        make component=${{ inputs.component_name }} env=qa
 
   UAT-Deployment:
-    runs-on: Dev-Deployment
-    needs: Test
+    runs-on: self-hosted
+    needs: QA-Deployment
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
@@ -70,8 +74,8 @@ jobs:
   #        make component=${{ inputs.component_name }} env=uat
 
   PROD-Deployment:
-    runs-on: Dev-Deployment
-    needs: Test
+    runs-on: self-hosted
+    needs: UAT-Deployment
     steps:
       - name: check out repo code
         uses: actions/checkout@v4

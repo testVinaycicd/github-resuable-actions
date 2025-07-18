@@ -1,0 +1,28 @@
+name: Ci-deb-br
+on:
+  workflow_call:
+    inputs:
+      component_name:
+        required: true
+        type: string
+      app_type:
+        required: true
+        type: string
+jobs:
+  Download-Dependencies:
+    runs-on: self-hosted
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+      - run : echo Build
+
+  Test:
+    runs-on: self-hosted
+    needs: Download-Dependencies
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+      - run : echo Unit Test
+        name: unit tests
+      - run: echo Integration Test
+        name: Integration tests

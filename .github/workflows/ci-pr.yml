@@ -1,0 +1,24 @@
+name: Ci - main
+on:
+  workflow_call:
+    inputs:
+      component_name:
+        required: true
+        type: string
+
+jobs:
+  Code-Quality-checks:
+    runs-on: self-hosted
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+      - run : echo Code-Quality-checks
+
+  Test:
+    runs-on: self-hosted
+    needs: Code-Quality-checks
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+      - run : echo Test
+
