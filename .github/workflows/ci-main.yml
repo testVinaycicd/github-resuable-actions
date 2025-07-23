@@ -34,6 +34,7 @@ jobs:
 
       - name: Docker Build and Push
         run: |
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 886436958775.dkr.ecr.us-east-1.amazonaws.com
           docker push 886436958775.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.component_name }}:${{ github.sha }}
 
