@@ -15,7 +15,8 @@ jobs:
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
-
+      - name: CHeck
+        run: echo ${{ inputs.component_name }} ${GITHUB_SHA}
       - name: Download Dependencies and Build Docker Image
         run: |
           if [ "${{ inputs.app_type }}" == "nodejs" ]; then
